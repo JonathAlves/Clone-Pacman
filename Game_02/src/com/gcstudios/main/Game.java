@@ -40,10 +40,12 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static int frutas_atual = 0;
 	public static Gamestate gamestate = Gamestate.MENU;
 	public static boolean messageWinGame = true;
+	public static boolean messageGameOver = true;
 	public Menu menu;
 
 
 	public Game(){
+		Sound.musicBackground.loop();
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -58,7 +60,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		world = new World("/level1.png");
 		ui = new UI();
 
-		
 		entities.add(player);
 
 		menu = new Menu();
@@ -117,7 +118,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		g.fillRect(0, 0,WIDTH,HEIGHT);
 		
 		/*Renderização do jogo*/
-		//Graphics2D g2 = (Graphics2D) g;
 		world.render(g);
 		if(gamestate.equals(Gamestate.MENU)){
 			menu.render(g);
@@ -196,14 +196,27 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			if(Game.gamestate.equals(Gamestate.WIN)){
 				World.restartGame();
 				Game.gamestate = Gamestate.NORMAL;
+				Sound.musicBackground.loop();
 			}else if(Game.gamestate.equals(Gamestate.MENU)){
 				menu.enter = true;
+			}else if(Game.gamestate.equals(Gamestate.GAMEOVER)){
+				World.restartGame();
+				Game.gamestate = Gamestate.NORMAL;
+				Sound.musicBackground.loop();
 			}
 		}
 
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
 			gamestate = Gamestate.MENU;
 			menu.pause = true;
+		}
+
+		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+			if(Game.gamestate.equals(Gamestate.GAMEOVER)){
+				Sound.musicBackground.loop();
+				gamestate = Gamestate.MENU;
+				menu.pause = false;
+			}
 		}
 
 

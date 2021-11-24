@@ -5,10 +5,12 @@ import java.applet.AudioClip;
 
 public class Sound {
 
-	private AudioClip clip;
-	
+	public AudioClip clip;
+
+	public static final Sound musicBackground = new Sound("/MenuTheme.wav");
 	public static final Sound hurtEffect = new Sound("/hurt.wav");
-	
+	public static final Sound WinEffect = new Sound("/WinSound.wav");
+
 	private Sound(String name) {
 		try {
 			clip = Applet.newAudioClip(Sound.class.getResource(name));
